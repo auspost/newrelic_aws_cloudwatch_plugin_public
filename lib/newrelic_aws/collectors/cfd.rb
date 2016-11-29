@@ -7,14 +7,14 @@ module NewRelicAWS
           :secret_access_key => @aws_secret_key,
           :region => @aws_region,
         )
-	cfd.list_distributions.items.map { |id| id } 
+        cfd.list_distributions.distribution_list.items.map { |name| name.id }
       end
 
       def metric_list
         [
           ["Requests", "Sum", "Count"],
           ["BytesDownloaded", "Sum", "Bytes", 0],
-          ["BytesUploaded", "Sun", "Bytes", 0],
+          ["BytesUploaded", "Sum", "Bytes", 0],
           ["TotalErrorRate", "Average", "Percent", 0],
           ["4xxErrorRate", "Average", "Percent", 0],
           ["5xxErrorRate", "Average", "Percent", 0]
