@@ -212,7 +212,7 @@ module NewRelicAWS
     end
   end
 
-  module LAM
+  module CFD
     class Agent < Base::Agent
       agent_guid "com.newrelic.aws.cfd"
       agent_version NewRelicAWS::VERSION
