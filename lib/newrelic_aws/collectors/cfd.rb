@@ -31,11 +31,17 @@ module NewRelicAWS
               :statistic     => statistic,
               :unit          => unit,
               :default_value => default_value,
-              :dimension     => {
-                :name  => "DistributionId",
-                :value => distribution_id
-              }
-            )
+              :dimensions    => [
+                {
+                  :name  => "DistributionId",
+                  :value => distribution_id
+                },
+                {
+                  :name  => "Region",
+                  :value => "Global"
+                }
+              ]
+	    )
             NewRelic::PlatformLogger.debug("metric_name: #{metric_name}, statistic: #{statistic}, unit: #{unit}, response: #{data_point.inspect}")
             unless data_point.nil?
               data_points << data_point
