@@ -50,7 +50,7 @@ module NewRelicAWS
           NewRelic::PlatformLogger.debug("Backtrace: " + error.backtrace.join("\n "))
           raise error
         end
-        NewRelic::PlatformLogger.error("Retrieved statistics: #{statistics.inspect}")
+        NewRelic::PlatformLogger.debug("Retrieved statistics: #{statistics.inspect}")
 
         point = statistics[:datapoints].last
         value = get_value(point, options)
