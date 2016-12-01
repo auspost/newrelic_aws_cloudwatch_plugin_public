@@ -12,7 +12,7 @@ module NewRelicAWS
 
       def metric_list
         [
-          ["Requests", "Sum", "Count"],
+          ["Requests", "Sum", "Count", 0],
           ["BytesDownloaded", "Sum", "Bytes", 0],
           ["BytesUploaded", "Sum", "Bytes", 0],
           ["TotalErrorRate", "Average", "Percent", 0],
