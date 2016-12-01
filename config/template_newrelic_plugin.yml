@@ -69,3 +69,5 @@ agents:
     enabled: false
   lam:
     enabled: false
+  cfd:
+    enabled: false
