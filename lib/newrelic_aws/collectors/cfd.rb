@@ -21,11 +21,50 @@ module NewRelicAWS
         ]
       end
 
+      def get_us_data_point(options)
+        @cloudwatch = Aws::CloudWatch::Resource.new(
+          :access_key_id     => @aws_access_key,
+          :secret_access_key => @aws_secret_key,
+          :region            => "us-east-1"
+        )
+        @cloudwatch_delay = options[:cloudwatch_delay] || 60
+
+        options[:period]     ||= 60
+        options[:start_time] ||= (Time.now.utc - (@cloudwatch_delay + options[:period])).iso8601
+        options[:end_time]   ||= (Time.now.utc - @cloudwatch_delay).iso8601
+        options[:dimensions] ||= [options[:dimension]]
+        NewRelic::PlatformLogger.debug("Retrieving statistics: " + options.inspect)
+        begin
+          statistics = @cloudwatch.client.get_metric_statistics(
+            :namespace   => options[:namespace],
+            :metric_name => options[:metric_name],
+            :unit        => options[:unit],
+            :statistics  => [options[:statistic]],
+            :period      => options[:period],
+            :start_time  => options[:start_time],
+            :end_time    => options[:end_time],
+            :dimensions  => options[:dimensions]
+          )
+        rescue => error
+          NewRelic::PlatformLogger.error("Unexpected error: " + error.message)
+          NewRelic::PlatformLogger.debug("Backtrace: " + error.backtrace.join("\n "))
+          raise error
+        end
+        NewRelic::PlatformLogger.error("Retrieved statistics: #{statistics.inspect}")
+
+        point = statistics[:datapoints].last
+        value = get_value(point, options)
+        return if value.nil?
+
+        component_name = get_component_name(options)
+        [component_name, options[:metric_name], options[:unit].downcase, value]
+      end
+
       def collect
         data_points = []
         cloudfront_distributions.each do | distribution_id |
           metric_list.each do |(metric_name, statistic, unit, default_value)|
-            data_point = get_data_point(
+            data_point = get_us_data_point(
               :namespace     => "AWS/CloudFront",
               :metric_name   => metric_name,
               :statistic     => statistic,
