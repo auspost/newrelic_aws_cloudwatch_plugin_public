@@ -22,6 +22,8 @@ module NewRelicAWS
       end
 
       def get_us_data_point(options)
+        # We need to have a different version for cloudfront
+        # as it uses the global region for monitoring
         @cloudwatch = Aws::CloudWatch::Resource.new(
           :access_key_id     => @aws_access_key,
           :secret_access_key => @aws_secret_key,
