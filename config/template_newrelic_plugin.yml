@@ -20,10 +20,12 @@ aws:
   # Update with you AWS account keys:
   access_key: 'YOUR_AWS_ACCESS_KEY_HERE'
   secret_key: 'YOUR_AWS_SECRET_KEY_HERE'
+  account_id: 'YOUR_ACCOUNT_ID'
 
   #Use the following if you would like to configure AWS keys with ENV variables
   #access_key: <%= ENV['AWS_ACCESS_KEY'] %>
   #secret_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  #account_id: <%= ENV['ACCOUNT_ID'] %>
 
   #Use the following line disable the key checks and enable usage of AWS instance metadata for setting keys
   #use_aws_metadata: true
@@ -70,4 +72,6 @@ agents:
   lam:
     enabled: false
   cfd:
+    enabled: false
+  es:
     enabled: false
