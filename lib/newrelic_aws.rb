@@ -219,6 +219,14 @@ module NewRelicAWS
       agent_human_labels("CloudFront") { "CloudFront" }
     end
   end
+  
+  module ES
+    class Agent < Base::Agent
+      agent_guid "com.newrelic.aws.es"
+      agent_version NewRelicAWS::VERSION
+      agent_human_labels("ElasticSearch") { "ElasticSearch" }
+    end
+  end
 
   #
   # Register each agent with the component.
@@ -235,6 +243,7 @@ module NewRelicAWS
   NewRelic::Plugin::Setup.install_agent :kin, KIN if NewRelicAWS::agent_enabled?(:kin)
   NewRelic::Plugin::Setup.install_agent :lam, LAM if NewRelicAWS::agent_enabled?(:lam)
   NewRelic::Plugin::Setup.install_agent :cfd, CFD if NewRelicAWS::agent_enabled?(:cfd)
+  NewRelic::Plugin::Setup.install_agent :es, ES if NewRelicAWS::agent_enabled?(:es)
 
   #
   # Launch the agents; this never returns.
